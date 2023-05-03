@@ -3,7 +3,7 @@ package dmp
 import (
 	"fmt"
 
-	"gitlab.sintezis.co/sintezis/sdk/web/dmp/database"
+	"github.com/GoLangWebSDK/dmp/database"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"

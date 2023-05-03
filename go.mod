@@ -1,4 +1,4 @@
-module gitlab.sintezis.co/sintezis/sdk/web/dmp
+module github.com/GoLangWebSDK/dmp
 
 go 1.20
 

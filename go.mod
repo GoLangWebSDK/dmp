@@ -4,12 +4,11 @@ go 1.20
 
 require (
 	github.com/go-gormigrate/gormigrate/v2 v2.0.2
-	github.com/rs/zerolog v1.29.0
-	gitlab.sintezis.co/sintezis/sdk/web/erlog v0.0.0-20230321144318-b2d2d76ace40
-	gorm.io/driver/mysql v1.4.7
+	github.com/rs/zerolog v1.29.1
+	gorm.io/driver/mysql v1.5.0
 	gorm.io/driver/postgres v1.5.0
-	gorm.io/driver/sqlite v1.4.4
-	gorm.io/gorm v1.24.7-0.20230306060331-85eaf9eeda11
+	gorm.io/driver/sqlite v1.5.0
+	gorm.io/gorm v1.25.0
 )
 
 require (

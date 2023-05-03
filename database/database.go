@@ -11,8 +11,7 @@ import (
 	// dependent on our custom error and logging package.
 	//
 	"os"
-
-	"gitlab.sintezis.co/sintezis/sdk/web/erlog"
+	"time"
 
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
@@ -56,9 +55,13 @@ type DBConfig struct {
 }
 
 func NewDatabase(cnf *DBConfig) *Database {
+
+	output := zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC822}
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+
 	return &Database{
 		DBconfig: *cnf,
-		log:      erlog.Setup(os.Stdout, true),
+		log:      zerolog.New(output).With().Timestamp().Logger(),
 		LogLvl:   logger.Error,
 	}
 }

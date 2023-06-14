@@ -4,7 +4,7 @@ This module provides adapters for various types of database connections, and exp
 
 It has one sub-package called "database" which has the top-level interface exposing all the operations you need to do to set up a database connection, migrate and seed the data, and expose the connection to the repository layer.
 
-```
+```go
 // The new database configuration expects a configuration struct...
 config := &database.DBConfig{
     DBName: "sdk-dev-db",
@@ -50,7 +50,7 @@ Once the connection is established, developers can perform migration and seed op
 Run a migration
 
 
-```
+```go
 // The database package exposes the NewMigration(*database.Database) *database.Migration
 // interface that creates a new migration object needed to create a database structure
 // based on the models provided by the developer.
@@ -76,7 +76,7 @@ migration.Run()
 
 Once the database has taken the intended shape, you can use the modules seed engine to populate some test data. In order to specify the seed logic, each model that will be seeded needs to inherit the SeedModel() interface, thus becoming a seeder model.
 
-```
+```go
 type User struct {
 	ID   uint32
 	Name string `json:"name"`
@@ -114,7 +114,7 @@ func (u *User) SeedModel() error {
 
 Instead of burying this logic deep inside the database package, we can use native Go interfaces to expose pieces of logic all the way up to the application layer. This way, developers can define the seed data for each model when needed.
 
-```
+```go
 // The database package exposes the NewSeeder(*database.Database) *database.Seeder
 // interface, which creates a new seeder object for populating the database based on
 // the models provided by the developer.
@@ -134,7 +134,7 @@ Once our database is completely configured, we can start performing operations o
 
 You can extend your custom repository. 
 
-```
+```go
 // Custom repository wrapper for User model
 type UserRepository struct {
 	dmp.Repository[*models.User]
@@ -179,7 +179,7 @@ func (server *GRPCUserServer) GetUsers(ctx context.Context, req *connect.Request
 
 A developer can add custom wrappers and additional logic, in the repository implementation, add additional checks, format the data, etc.
 
-```
+```go
 func (repo *UserRepository) GetUsers() []*models.User {
 	resp, err := repo.GetAll()
 	if err == nil {

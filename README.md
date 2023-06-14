@@ -145,9 +145,11 @@ func NewUserRepository() *UserRepository {
 		Repository: *dmp.NewRepository(&models.User{}),
 	}
 }
+```
 
 All the data operations are now available in the UserRepository, so they can be called in a controller or a gRPC service implementation without any additional code. 
 
+```go
 // REST
 func (ctrl *UserController) Read(ctx *rest.Context) {
 	ctx.SetContentType("application/json")

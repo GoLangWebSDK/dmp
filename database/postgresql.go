@@ -17,22 +17,25 @@ type PostgreAdapter struct {
 func NewPostgreAdapter(cnf *DBConfig) *PostgreAdapter {
 	return &PostgreAdapter{
 		Adapter: Adapter{
-			config: *cnf,
+			Config: *cnf,
 		},
 	}
 }
 
 func (postgre *PostgreAdapter) Init(log zerolog.Logger, logLevel logger.LogLevel) *gorm.DB {
-	postgre.dsn = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable",
-		postgre.config.DBHost,
-		postgre.config.DBUser,
-		postgre.config.DBPass,
-		postgre.config.DBName,
-		postgre.config.DBPort,
-	)
+	if postgre.DSN == "" {
 
-	postgre.db, postgre.err = gorm.Open(
-		postgres.Open(postgre.dsn),
+		postgre.DSN = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable",
+			postgre.Config.DBHost,
+			postgre.Config.DBUser,
+			postgre.Config.DBPass,
+			postgre.Config.DBName,
+			postgre.Config.DBPort,
+		)
+	}
+
+	postgre.DB, postgre.Err = gorm.Open(
+		postgres.Open(postgre.DSN),
 		&gorm.Config{
 			Logger: logger.New(
 				&log, // IO.writer
@@ -46,11 +49,11 @@ func (postgre *PostgreAdapter) Init(log zerolog.Logger, logLevel logger.LogLevel
 		},
 	)
 
-	if postgre.err != nil {
-		log.Fatal().Err(postgre.err).Msg("Failed to setup database")
+	if postgre.Err != nil {
+		log.Fatal().Err(postgre.Err).Msg("Failed to setup database")
 	}
 
-	return postgre.db
+	return postgre.DB
 }
 
 func (postgre *PostgreAdapter) Setup(cnf *DBConfig) DBAdapter {

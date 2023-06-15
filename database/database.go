@@ -32,10 +32,10 @@ type DBAdapter interface {
 }
 
 type Adapter struct {
-	db     *gorm.DB
-	config DBConfig
-	dsn    string
-	err    error
+	DB     *gorm.DB
+	Config DBConfig
+	DSN    string
+	Err    error
 }
 
 type Database struct {
@@ -43,7 +43,7 @@ type Database struct {
 	DBadapter DBAdapter
 	DBconfig  DBConfig
 	LogLvl    logger.LogLevel
-	log       zerolog.Logger
+	Log       zerolog.Logger
 }
 
 type DBConfig struct {
@@ -61,13 +61,13 @@ func NewDatabase(cnf *DBConfig) *Database {
 
 	return &Database{
 		DBconfig: *cnf,
-		log:      zerolog.New(output).With().Timestamp().Logger(),
+		Log:      zerolog.New(output).With().Timestamp().Logger(),
 		LogLvl:   logger.Error,
 	}
 }
 
 func (db *Database) Init() *Database {
-	db.Engine = db.DBadapter.Init(db.log, db.LogLvl)
+	db.Engine = db.DBadapter.Init(db.Log, db.LogLvl)
 	return db
 }
 
@@ -85,7 +85,7 @@ func (db *Database) Config(dbname string, dbuser string, dbpass string, dbhost s
 func (db *Database) Adapter(adapter DBAdapter) *Database {
 	// what is this? if db.config == (DBConfig{}) ??
 	if db.DBconfig == (DBConfig{}) {
-		db.log.Error().Msg("Database config not set.")
+		db.Log.Error().Msg("Database config not set.")
 		return db
 	}
 
@@ -99,12 +99,6 @@ func (db *Database) LogLevel(logLevel logger.LogLevel) *Database {
 }
 
 func (db *Database) Logger(log zerolog.Logger) *Database {
-	db.log = log
-	return db
-}
-
-func (db *Database) Log(log zerolog.Logger, logLevel logger.LogLevel) *Database {
-	db.log = log
-	db.LogLvl = logLevel
+	db.Log = log
 	return db
 }

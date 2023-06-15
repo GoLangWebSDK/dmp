@@ -14,20 +14,20 @@ type SQLiteAdapter struct {
 func NewSQLiteAdapter(cnf *DBConfig) *SQLiteAdapter {
 	return &SQLiteAdapter{
 		Adapter: Adapter{
-			config: *cnf,
+			Config: *cnf,
 		},
 	}
 }
 
 // Setup initializes the database instance
 func (sql *SQLiteAdapter) Init(log zerolog.Logger, logLevel logger.LogLevel) *gorm.DB {
-	sql.db, sql.err = gorm.Open(sqlite.Open(sql.config.DBName), &gorm.Config{})
+	sql.DB, sql.Err = gorm.Open(sqlite.Open(sql.Config.DBName), &gorm.Config{})
 
-	if sql.err != nil {
-		log.Fatal().Err(sql.err).Msg("Failed to setup database")
+	if sql.Err != nil {
+		log.Fatal().Err(sql.Err).Msg("Failed to setup database")
 	}
 
-	return sql.db
+	return sql.DB
 }
 
 func (sql *SQLiteAdapter) Setup(cnf *DBConfig) DBAdapter {

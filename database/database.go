@@ -84,10 +84,12 @@ func (db *Database) Config(dbname string, dbuser string, dbpass string, dbhost s
 
 func (db *Database) Adapter(adapter DBAdapter) *Database {
 	// what is this? if db.config == (DBConfig{}) ??
-	if db.DBconfig == (DBConfig{}) {
-		db.Log.Error().Msg("Database config not set.")
-		return db
-	}
+	// it's making an isse when trying to set dsn string manually,
+	// as an empty config is not allowed
+	// if db.DBconfig == (DBConfig{}) {
+	// 	db.Log.Error().Msg("Database config not set.")
+	// 	return db
+	// }
 
 	db.DBadapter = adapter.Setup(&db.DBconfig)
 	return db

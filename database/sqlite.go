@@ -8,12 +8,12 @@ import (
 )
 
 type SQLiteAdapter struct {
-	Adapter
+	*Adapter
 }
 
 func NewSQLiteAdapter(cnf *DBConfig) *SQLiteAdapter {
 	return &SQLiteAdapter{
-		Adapter: Adapter{
+		Adapter: &Adapter{
 			Config: *cnf,
 		},
 	}

@@ -11,12 +11,12 @@ import (
 )
 
 type MySQLAdapter struct {
-	Adapter
+	*Adapter
 }
 
 func NewMySQLAdapter(cnf *DBConfig) *MySQLAdapter {
 	return &MySQLAdapter{
-		Adapter: Adapter{
+		Adapter: &Adapter{
 			Config: *cnf,
 		},
 	}

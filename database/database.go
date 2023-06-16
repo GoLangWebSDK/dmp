@@ -1,15 +1,6 @@
 package database
 
 import (
-	//
-	// I made a little poopoo here. The dmp/database package is now dependent on another package of mine: logger.
-	// Firstly, I created logger as a temporary package just to handle the initial dependencies that came from
-	// the initial stack. Secondly, I don't like the idea of our packages being codependent on each other.
-	// Maybe we can make them dependent on the logger package, but I think that's not a good idea. Thirdly,
-	// the package will be rewritten or expanded anyway into the erlog package. So, maybe we can create an internal
-	// logging system for each package that can be configured from the app package, or make all packages
-	// dependent on our custom error and logging package.
-	//
 	"os"
 	"time"
 
@@ -17,10 +8,6 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
-
-// How to handle database connection in a controller?
-// One way is to create a global variable and assign it in main.go
-// then use directly inside a repostry.
 
 // Global variable for database connection
 var DBManager *Database

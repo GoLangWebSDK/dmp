@@ -37,6 +37,7 @@ func (postgre *PostgreAdapter) Init() DBAdapter {
 }
 
 func (postgre *PostgreAdapter) Setup(log zerolog.Logger, logLevel logger.LogLevel) *gorm.DB {
+	log.Printf("Postgre DSN Link: %s", postgre.DSN)
 	postgre.DB, postgre.Err = gorm.Open(
 		postgres.Open(postgre.DSN),
 		&gorm.Config{

@@ -22,7 +22,7 @@ func NewMySQLAdapter(cnf *DBConfig) *MySQLAdapter {
 	}
 }
 
-func (mySql *MySQLAdapter) Init(log zerolog.Logger, logLevel logger.LogLevel) *gorm.DB {
+func (mySql *MySQLAdapter) Init() DBAdapter {
 	if mySql.DSN == "" {
 		mySql.DSN = "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
 		mySql.DSN = fmt.Sprintf(mySql.DSN,
@@ -34,6 +34,11 @@ func (mySql *MySQLAdapter) Init(log zerolog.Logger, logLevel logger.LogLevel) *g
 		)
 	}
 
+	return mySql
+
+}
+
+func (mySql *MySQLAdapter) Setup(log zerolog.Logger, logLevel logger.LogLevel) *gorm.DB {
 	mySql.DB, mySql.Err = gorm.Open(mysql.Open(mySql.DSN), &gorm.Config{
 		Logger: logger.New(
 			&log, // IO.writer
@@ -51,8 +56,4 @@ func (mySql *MySQLAdapter) Init(log zerolog.Logger, logLevel logger.LogLevel) *g
 	}
 
 	return mySql.DB
-}
-
-func (mySql *MySQLAdapter) Setup(cnf *DBConfig) DBAdapter {
-	return NewMySQLAdapter(cnf)
 }

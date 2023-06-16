@@ -11,20 +11,19 @@ import (
 )
 
 type PostgreAdapter struct {
-	Adapter
+	*Adapter
 }
 
 func NewPostgreAdapter(cnf *DBConfig) *PostgreAdapter {
 	return &PostgreAdapter{
-		Adapter: Adapter{
+		Adapter: &Adapter{
 			Config: *cnf,
 		},
 	}
 }
 
-func (postgre *PostgreAdapter) Init(log zerolog.Logger, logLevel logger.LogLevel) *gorm.DB {
+func (postgre *PostgreAdapter) Init() DBAdapter {
 	if postgre.DSN == "" {
-
 		postgre.DSN = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable",
 			postgre.Config.DBHost,
 			postgre.Config.DBUser,
@@ -34,6 +33,10 @@ func (postgre *PostgreAdapter) Init(log zerolog.Logger, logLevel logger.LogLevel
 		)
 	}
 
+	return postgre
+}
+
+func (postgre *PostgreAdapter) Setup(log zerolog.Logger, logLevel logger.LogLevel) *gorm.DB {
 	postgre.DB, postgre.Err = gorm.Open(
 		postgres.Open(postgre.DSN),
 		&gorm.Config{
@@ -54,8 +57,4 @@ func (postgre *PostgreAdapter) Init(log zerolog.Logger, logLevel logger.LogLevel
 	}
 
 	return postgre.DB
-}
-
-func (postgre *PostgreAdapter) Setup(cnf *DBConfig) DBAdapter {
-	return NewPostgreAdapter(cnf)
 }

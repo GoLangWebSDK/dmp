@@ -26,8 +26,8 @@ import (
 var DBManager *Database
 
 type DBAdapter interface {
-	Init(log zerolog.Logger, logLevel logger.LogLevel) *gorm.DB
-	Setup(config *DBConfig) DBAdapter
+	Init() DBAdapter
+	Setup(log zerolog.Logger, logLevel logger.LogLevel) *gorm.DB
 	// NewMock() (sqlmock.Sqlmock, *gorm.DB)
 }
 
@@ -67,7 +67,7 @@ func NewDatabase(cnf *DBConfig) *Database {
 }
 
 func (db *Database) Init() *Database {
-	db.Engine = db.DBadapter.Init(db.Log, db.LogLvl)
+	db.Engine = db.DBadapter.Setup(db.Log, db.LogLvl)
 	return db
 }
 
@@ -83,14 +83,7 @@ func (db *Database) Config(dbname string, dbuser string, dbpass string, dbhost s
 }
 
 func (db *Database) Adapter(adapter DBAdapter) *Database {
-	// Commenting out for now, it's making an issue when trying to set dsn string manually,
-	// as an empty config is not allowed
-	// if db.DBconfig == (DBConfig{}) {
-	// 	db.Log.Error().Msg("Database config not set.")
-	// 	return db
-	// }
-
-	db.DBadapter = adapter.Setup(&db.DBconfig)
+	db.DBadapter = adapter.Init()
 	return db
 }
 
